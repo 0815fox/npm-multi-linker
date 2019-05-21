@@ -34,15 +34,20 @@ function linkRegisterPackages(paths, dryRun, quiet) {
 /**
  * For an array of paths, this function returns a set of package names.
  */
-function getPackageNamesSetAndPackagePaths(paths) {
+function getPackageNamesSetAndPackagePaths(paths, quiet) {
 	// this will be a set of package names (from the package.json files)
 	const packageNames = new Set();
 	// this will contain a Map packageName->path
 	const packagePathsMap = new Map();
 	paths.forEach((packagePath) => {
 		const packageJson = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json")));
-		packageNames.add(packageJson.name);
-		packagePathsMap.set(packageJson.name, packagePath);
+		const name = packageJson.name;
+		if (name !== undefined) {
+			packageNames.add(name);
+			packagePathsMap.set(name, packagePath);
+		} else {
+			/*if (!quiet) */console.warn("Found a package without name in: " + packagePath);
+		}
 	});
 	return {packageNames, packagePathsMap};
 }
@@ -72,22 +77,27 @@ function linkPackages(packagePath, packageNames, packagePathsMap, dryRun, quiet,
 
 function installInPackagePath(packagePath, dryRun, quiet) {
 	const cmd = "cd " + packagePath + " && npm install";
-	if (dryRun) console.info(cmd);
+	if (dryRun && !quiet) console.info(cmd);
 	else shell.exec(cmd, {quiet});
 }
 
 module.exports = function(destPaths, searchPaths, dryRun, recursionDepth, quiet, npmLink, installBefore, unlink) {
+	dryRun = dryRun === true;
+	quiet = quiet === true;
+	npmLink = npmLink === true;
+	installBefore = installBefore === true;
+	unlink = unlink === true;
 	if (dryRun && !quiet) console.info("Simulating: ");
 	recursionDepth += 1;
 	if (searchPaths === undefined || searchPaths.length < 1) searchPaths = ["."];
 	if (unlink) installBefore = true;
 	const packagePaths = findPackages(searchPaths, recursionDepth);
-	if (npmLink === true) linkRegisterPackages(packagePaths, dryRun, quiet === true);
-	const {packageNames, packagePathsMap} = getPackageNamesSetAndPackagePaths(packagePaths);
+	if (npmLink === true) linkRegisterPackages(packagePaths, dryRun, quiet);
+	const {packageNames, packagePathsMap} = getPackageNamesSetAndPackagePaths(packagePaths, quiet);
 	if (destPaths === undefined) destPaths = packagePaths;
 	if (destPaths.length < 1) destPaths = ["."];
 	destPaths.forEach((packagePath) => {
 		if (installBefore === true) installInPackagePath(packagePath, dryRun, quiet);
-		if (!unlink) linkPackages(packagePath, packageNames, packagePathsMap, dryRun, quiet === true, npmLink === true);
+		if (!unlink) linkPackages(packagePath, packageNames, packagePathsMap, dryRun, quiet, npmLink);
 	});
 };
