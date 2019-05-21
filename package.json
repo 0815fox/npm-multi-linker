@@ -2,7 +2,8 @@
   "name": "npm-multi-linker",
   "version": "0.1.3",
   "description": "",
-  "main": "index.js",
+  "main": "js/linker.js",
+  "bin": "js/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
