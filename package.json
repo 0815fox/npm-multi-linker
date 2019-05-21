@@ -1,0 +1,27 @@
+{
+  "name": "npm-multi-linker",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0815fox/npm-multi-linker.git"
+  },
+  "keywords": [
+    "npm",
+    "link"
+  ],
+  "author": "Michael Kriegel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0815fox/npm-multi-linker/issues"
+  },
+  "homepage": "https://github.com/0815fox/npm-multi-linker#readme",
+  "dependencies": {
+    "command-line-args": "^5.1.1",
+    "shelljs": "^0.8.3"
+  }
+}
