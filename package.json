@@ -1,6 +1,6 @@
 {
   "name": "npm-multi-linker",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "main": "js/linker.js",
   "bin": "js/cli.js",
