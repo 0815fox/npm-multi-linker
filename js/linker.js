@@ -94,7 +94,11 @@ module.exports = function(destPaths, searchPaths, dryRun, recursionDepth, quiet,
 	const packagePaths = findPackages(searchPaths, recursionDepth);
 	if (npmLink === true) linkRegisterPackages(packagePaths, dryRun, quiet);
 	const {packageNames, packagePathsMap} = getPackageNamesSetAndPackagePaths(packagePaths, quiet);
-	if (destPaths === undefined || destPaths.length < 1) destPaths = ["."];
+	if (destPaths === undefined) {
+		if (fs.existsSync("./package.json")) destPaths = ["."];
+		else destPaths = packagePaths;
+	}
+	if (destPaths.length < 1) destPaths = ["."];
 	destPaths.forEach((packagePath) => {
 		if (installBefore === true) installInPackagePath(packagePath, dryRun, quiet);
 		if (!unlink) linkPackages(packagePath, packageNames, packagePathsMap, dryRun, quiet, npmLink);

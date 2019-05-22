@@ -19,7 +19,7 @@ Determination on what to link is based on which modules are currently installed 
 
 ## Examples
 
-### Replace all dependencies of all modules in the current by links to modules in current directory
+### Replace all dependencies of all modules in the current directory by links to modules in current directory
 
 ```
 cd path/to/directory/containing/my/repos
