@@ -96,7 +96,7 @@ module.exports = function(destPaths, searchPaths, dryRun, recursionDepth, quiet,
 	const {packageNames, packagePathsMap} = getPackageNamesSetAndPackagePaths(packagePaths, quiet);
 	if (destPaths === undefined) {
 		if (fs.existsSync("./package.json")) destPaths = ["."];
-		else destPaths = packagePaths;
+		else destPaths = findPackages(["."], recursionDepth);
 	}
 	if (destPaths.length < 1) destPaths = ["."];
 	destPaths.forEach((packagePath) => {
