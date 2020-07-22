@@ -77,8 +77,8 @@ function linkPackages(packagePath, packageNames, packagePathsMap, dryRun, quiet,
 
 function installInPackagePath(packagePath, dryRun, quiet) {
 	const cmd = "cd " + packagePath + " && npm install";
-	if (dryRun && !quiet) console.info(cmd);
-	else shell.exec(cmd, {quiet});
+	if (!quiet) console.info(cmd);
+	if (!dryRun) shell.exec(cmd, {quiet});
 }
 
 module.exports = function(destPaths, searchPaths, dryRun, recursionDepth, quiet, npmLink, installBefore, unlink) {
